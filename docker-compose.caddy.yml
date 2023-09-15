@@ -1,0 +1,67 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: danielleapi
+    image: deejay001/danielle:api
+    ports:
+      - 1323:1323
+    restart: unless-stopped
+    volumes:
+      - /home/delane/Pictures/Test:/media
+      # NEED THIS FOR SYNOLOGY
+      - /volume1/photo/baby:/media
+
+  sk:
+    container_name: nodesk
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.fe
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+  
+  caddy:
+    container_name: caddy
+    build:
+      context: ./web/caddy
+      dockerfile: Dockerfile.caddy
+    restart: unless-stopped
+    ports:
+      - 8002:8002
+      - 4443:4443
+    volumes:
+      - ./web/caddy/data:/data
+      - ./web/caddy/config:/config
+      - ./web/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./web/caddy/logs:/var/log/caddy/
+
+  # webserver:
+  #   container_name: nginxwebserver
+  #   image: deejay001/danielle:nginx
+  #   ports:
+  #     - 8002:80
+  #     - 4443:443
+  #   restart: always
+  #   volumes:
+  #     - ./web/nginx/conf:/etc/nginx/conf.d/:ro
+  #     - ./web/certbot/www/:/var/www/certbot/:ro
+  #     - ./web/certbot/conf/:/etc/nginx/ssl/:ro
+  #   # NEED THESE FOR SYNOLOGY
+  #   #   - /volume1/docker/Danielle/web/nginx/conf:/etc/nginx/conf.d/:ro
+  #   #   - /volume1/docker/Danielle/web/certbot/www/:/var/www/certbot/:ro
+  #   #   - /volume1/docker/Danielle/web/certbot/conf/:/etc/nginx/ssl/:ro
+  #   depends_on:
+  #     - api
+  #     - sk
+  
+  # certbot:
+  #   container_name: certbot
+  #   image: deejay001/danielle:certbot
+  #   volumes:
+  #     - ./web/certbot/www/:/var/www/certbot/:rw
+  #     - ./web/certbot/conf/:/etc/letsencrypt/:rw
+  #     # NEED THESE FOR SYNOLOGY
+  #     # - /volume1/docker/Danielle/web/certbot/www/:/var/www/certbot/:rw
+  #     # - /volume1/docker/Danielle/web/certbot/conf/:/etc/letsencrypt/:rw
+  #   command: certonly --webroot -w /var/www/certbot --staging --email delane.jackson@gmail.com -d dasebelle.com -d www.dasebelle.com --agree-tos

@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: danielleapi
+    image: deejay001/danielle:api
+    ports:
+      - 1323:1323
+    restart: unless-stopped
+    volumes:
+      - /volume1/photo/baby:/media
+
+  webserver:
+    container_name: nginxwebserver
+    image: deejay001/danielle:nginx
+    ports:
+      - 8002:80
+      - 4443:443
+    restart: always
+    volumes:
+      - /volume1/docker/Danielle/web/nginx/conf:/etc/nginx/conf.d/:ro
+      - /volume1/docker/Danielle/web/certbot/www/:/var/www/certbot/:ro
+      - /volume1/docker/Danielle/web/certbot/conf/:/etc/nginx/ssl/:ro
+    depends_on:
+      - api
+      - sk
+  
+  certbot:
+    container_name: certbot
+    image: deejay001/danielle:certbot
+    volumes:
+      - /volume1/docker/Danielle/web/certbot/www/:/var/www/certbot/:rw
+      - /volume1/docker/Danielle/web/certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot -w /var/www/certbot --staging --email delane.jackson@gmail.com -d dasebelle.com -d www.dasebelle.com --agree-tos
+  
+  sk:
+    container_name: nodesk
+    image: deejay001/danielle:sk
+    ports:
+      - 3000:3000
+    restart: unless-stopped

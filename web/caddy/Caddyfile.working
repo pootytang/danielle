@@ -1,0 +1,17 @@
+{
+  debug
+}
+
+http://dani-belle.com:8002 {
+  redir https://dani-belle.com:4443
+}
+
+https://dani-belle.com:4443 {
+  tls {
+    dns cloudflare axMrjihPJ_xm4feZmtSpTdp-ADaHjZAcuW3IyETj
+    resolvers 8.8.8.8
+  }
+  reverse_proxy /api/v1/* api:1323
+  reverse_proxy sk:3000
+}
+

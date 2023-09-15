@@ -1,0 +1,15 @@
+FROM golang:1.21.0 AS build
+
+WORKDIR /go/src/app
+COPY . .
+RUN go mod tidy
+RUN go build -ldflags="-s -w" -o /api ./*.go
+EXPOSE 1323
+CMD ["/api"]
+
+# FROM alpine:3.17
+# RUN apk --no-cache add ca-certificates
+# WORKDIR /
+# COPY --from=build /api /api
+# EXPOSE 1323
+# ENTRYPOINT ["/api"]

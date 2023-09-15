@@ -1,0 +1,9 @@
+{
+	"sans": [
+		"dasebelle.com"
+	],
+	"issuer_data": {
+		"url": "https://acme-v02.api.letsencrypt.org/acme/cert/0472bd4b6f4d9d050464a3dd46f0905b1ced",
+		"ca": "https://acme-v02.api.letsencrypt.org/directory"
+	}
+}

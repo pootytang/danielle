@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: danielleapi
+    image: deejay001/danielle:api
+    ports:
+      - 1323:1323
+    restart: unless-stopped
+    volumes:
+      - /volume1/photo/baby:/media
+
+  webserver:
+    container_name: caddyserver
+    image: deejay001/danielle:caddy
+    ports:
+      - 8002:8002
+      - 4443:4443
+    restart: unless-stopped
+    volumes:
+      - /volume1/docker/Danielle/web/caddy/data:/data
+      - /volume1/docker/Danielle/web/caddy/config:/config
+      - /volume1/docker/Danielle/web/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - /volume1/docker/Danielle/web/caddy/logs:/var/log/caddy/
+    depends_on:
+      - api
+      - sk
+
+  sk:
+    container_name: nodesk
+    image: deejay001/danielle:sk
+    ports:
+      - 3000:3000
+    restart: unless-stopped

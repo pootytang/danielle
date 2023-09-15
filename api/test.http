@@ -1,0 +1,39 @@
+### GET ALL ROUTES ###
+GET http://dasebelle.com
+###
+
+########## ULTRASOUND ##########
+### GET ALL ULTRASOUND IMAGES ###
+GET http://localhost:1323/api/v1/public/ultrasounds
+###
+
+### GET AN ULTRASOUND IMAGE ###
+GET http://localhost:1323/api/v1/public/ultrasounds/Selection_002.png
+###
+
+### GET A BAD ULTRASOUND IMAGE ###
+GET http://localhost:1323/api/v1/public/ultrasounds/ImageDoesNotExist.png
+###
+
+########## GROWING MOMMY ##########
+### GET ALL GROWING MOMMY IMAGES ###
+GET http://localhost:1323/api/v1/public/growingmommy
+###
+
+### GET AN GROWING MOMMY IMAGE ###
+GET http://localhost:1323/api/v1/public/growingmommy/Selection_008.png
+###
+
+### GET A BAD GROWING MOMMY IMAGE ###
+GET http://localhost:1323/api/v1/public/growingmommy/ImageDoesNotExist.png
+###
+
+#### NOT IMPLEMENTED YET ####
+POST http://localhost:1323/fact HTTP/1.1
+Content-Type: application/json
+
+{
+  "question": "How many timezones are there in Russia?",
+  "answer": "eleven"
+}
+###
