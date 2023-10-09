@@ -9,5 +9,6 @@ FROM alpine:3.18
 RUN apk --no-cache add ca-certificates
 WORKDIR /
 COPY --from=build /api /api
+COPY dev.env /
 EXPOSE 1323
 CMD ["/api"]

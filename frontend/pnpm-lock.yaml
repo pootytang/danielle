@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@iconify/svelte':
+    specifier: ^3.1.4
+    version: 3.1.4(svelte@4.2.0)
   '@sveltejs/adapter-auto':
     specifier: ^2.0.0
     version: 2.1.0(@sveltejs/kit@1.22.6)
@@ -35,9 +38,15 @@ devDependencies:
   flowbite-svelte:
     specifier: ^0.44.2
     version: 0.44.2(svelte@4.2.0)
+  flowbite-svelte-blocks:
+    specifier: ^0.5.1
+    version: 0.5.1(svelte@4.2.0)(tailwindcss@3.3.3)
   flowbite-svelte-icons:
     specifier: ^0.3.6
     version: 0.3.6(svelte@4.2.0)(tailwind-merge@1.14.0)(tailwindcss@3.3.3)
+  flowbite-typography:
+    specifier: ^1.0.3
+    version: 1.0.3(tailwindcss@3.3.3)
   postcss:
     specifier: ^8.4.24
     version: 8.4.28
@@ -330,6 +339,12 @@ packages:
       '@floating-ui/utils': 0.1.1
     dev: true
 
+  /@floating-ui/core@1.5.0:
+    resolution: {integrity: sha512-kK1h4m36DQ0UHGj5Ah4db7R0rHemTqqO0QLvUqi1/mUUp3LuAWbWxdxSIf/XsnH9VS6rRVPLJCncjRzUvyCLXg==}
+    dependencies:
+      '@floating-ui/utils': 0.1.4
+    dev: true
+
   /@floating-ui/dom@1.5.1:
     resolution: {integrity: sha512-KwvVcPSXg6mQygvA1TjbN/gh///36kKtllIF8SUm0qpFj8+rvYrpvlYdL1JoA71SHpDqgSSdGOSoQ0Mp3uY5aw==}
     dependencies:
@@ -337,8 +352,19 @@ packages:
       '@floating-ui/utils': 0.1.1
     dev: true
 
+  /@floating-ui/dom@1.5.3:
+    resolution: {integrity: sha512-ClAbQnEqJAKCJOEbbLo5IUlZHkNszqhuxS4fHAVxRPXPya6Ysf2G8KypnYcOTpx6I8xcgF9bbHb6g/2KpbV8qA==}
+    dependencies:
+      '@floating-ui/core': 1.5.0
+      '@floating-ui/utils': 0.1.4
+    dev: true
+
   /@floating-ui/utils@0.1.1:
     resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
+    dev: true
+
+  /@floating-ui/utils@0.1.4:
+    resolution: {integrity: sha512-qprfWkn82Iw821mcKofJ5Pk9wgioHicxcQMxx+5zt5GSKoqdWvgG5AxVmpmUUjzTLPVSH5auBrhI93Deayn/DA==}
     dev: true
 
   /@humanwhocodes/config-array@0.11.10:
@@ -359,6 +385,19 @@ packages:
 
   /@humanwhocodes/object-schema@1.2.1:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
+    dev: true
+
+  /@iconify/svelte@3.1.4(svelte@4.2.0):
+    resolution: {integrity: sha512-YDwQlN46ka8KPRayDb7TivmkAPizfTXi6BSRNqa1IV0+byA907n8JcgQafA7FD//pW5XCuuAhVx6uRbKTo+CfA==}
+    peerDependencies:
+      svelte: '*'
+    dependencies:
+      '@iconify/types': 2.0.0
+      svelte: 4.2.0
+    dev: true
+
+  /@iconify/types@2.0.0:
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
 
   /@jridgewell/gen-mapping@0.3.3:
@@ -722,6 +761,10 @@ packages:
       eslint-visitor-keys: 3.4.3
     dev: true
 
+  /@yr/monotone-cubic-spline@1.0.3:
+    resolution: {integrity: sha512-FQXkOta0XBSUPHndIKON2Y9JeQz5ZeMqLYZVVK93FliNBFm7LNMIZmY6FrMEB9XPcDbE2bekMbZD6kzDkxwYjA==}
+    dev: true
+
   /acorn-jsx@5.3.2(acorn@8.10.0):
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -772,6 +815,18 @@ packages:
   /apexcharts@3.41.1:
     resolution: {integrity: sha512-kta8fhXrfZYqW7K9kF7FqZ6imQaC6moyRgcUZjwIky/oeHVVISSN/2rjUIvZXnwxWHiSdDHMqLy+TqJhB4DXFA==}
     dependencies:
+      svg.draggable.js: 2.2.2
+      svg.easing.js: 2.0.0
+      svg.filter.js: 2.0.2
+      svg.pathmorphing.js: 0.1.3
+      svg.resize.js: 1.4.3
+      svg.select.js: 3.0.1
+    dev: true
+
+  /apexcharts@3.42.0:
+    resolution: {integrity: sha512-hYhzZqh2Efny9uiutkGU2M/EarJ4Nn8s6dxZ0C7E7N+SV4d1xjTioXi2NLn4UKVJabZkb3HnpXDoumXgtAymwg==}
+    dependencies:
+      '@yr/monotone-cubic-spline': 1.0.3
       svg.draggable.js: 2.2.2
       svg.easing.js: 2.0.0
       svg.filter.js: 2.0.2
@@ -1300,6 +1355,21 @@ packages:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
     dev: true
 
+  /flowbite-svelte-blocks@0.5.1(svelte@4.2.0)(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-SWmfHitd3PW+W+PlSDs+f+cuTUxtiJb0OX1YZ+pNLEKOhyTUPZtRtsGgz8lxZ6jEnp/Ecjys01G5Aok53+FhWQ==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      flowbite: 1.8.1
+      flowbite-svelte: 0.44.17(svelte@4.2.0)
+      flowbite-svelte-icons: 0.4.4(svelte@4.2.0)(tailwind-merge@1.14.0)(tailwindcss@3.3.3)
+      svelte: 4.2.0
+      tailwind-merge: 1.14.0
+    transitivePeerDependencies:
+      - tailwindcss
+    dev: true
+
   /flowbite-svelte-icons@0.3.6(svelte@4.2.0)(tailwind-merge@1.14.0)(tailwindcss@3.3.3):
     resolution: {integrity: sha512-4YEq++cbD36KF+zGgLqfkmQgfWGMAP7tjDbesuieROx6UgbMBTtj7f4n49iO+g1cMLelGsCkyZiwelCXDbIJ2w==}
     peerDependencies:
@@ -1310,6 +1380,31 @@ packages:
       svelte: 4.2.0
       tailwind-merge: 1.14.0
       tailwindcss: 3.3.3
+    dev: true
+
+  /flowbite-svelte-icons@0.4.4(svelte@4.2.0)(tailwind-merge@1.14.0)(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-fOZri6HYYyo13olXQzvoid19hlYR/HjzQobpzBPkj8QseCJ9R1uWR7bNlhPl5vFCElqcfm3UooYiwT4rKKiqzQ==}
+    peerDependencies:
+      svelte: ^3.54.0 || ^4.0.0
+      tailwind-merge: ^1.13.2
+      tailwindcss: ^3.3.2
+    dependencies:
+      svelte: 4.2.0
+      tailwind-merge: 1.14.0
+      tailwindcss: 3.3.3
+    dev: true
+
+  /flowbite-svelte@0.44.17(svelte@4.2.0):
+    resolution: {integrity: sha512-Ig7K/obOQ/6uwR2zkg0NT4u5dvcqAXcM0ZkMWVGBkfCD5refnvGsS2q6lflefN+cFxXaDi9J/Rorgp6KwP9JPw==}
+    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      '@floating-ui/dom': 1.5.3
+      apexcharts: 3.42.0
+      flowbite: 1.8.1
+      svelte: 4.2.0
+      tailwind-merge: 1.14.0
     dev: true
 
   /flowbite-svelte@0.44.2(svelte@4.2.0):
@@ -1323,6 +1418,17 @@ packages:
       flowbite: 1.8.1
       svelte: 4.2.0
       tailwind-merge: 1.14.0
+    dev: true
+
+  /flowbite-typography@1.0.3(tailwindcss@3.3.3):
+    resolution: {integrity: sha512-UbdQFIIOb7xx2TS+QQrqr79B6ZSkSZurxYWzV0npth6Wns3/j7KfeDJoH9QFU+Zs7zjrvejNtyzgzWLWyCrdiA==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      tailwindcss: 3.3.3
     dev: true
 
   /flowbite@1.8.1:
@@ -1588,6 +1694,14 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
+    dev: true
+
+  /lodash.castarray@4.4.0:
+    resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
+    dev: true
+
+  /lodash.isplainobject@4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
     dev: true
 
   /lodash.merge@4.6.2:

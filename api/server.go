@@ -2,12 +2,23 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"log/slog"
 	"os"
 
 	"github.com/labstack/echo/v4"
+	"github.com/pootytang/danielleapi/initializers"
 	"github.com/pootytang/danielleapi/types"
 )
+
+func init() {
+	config, err := initializers.LoadConfig("./")
+	if err != nil {
+		log.Fatal("init(): Could not load environment variables: ", err)
+	}
+
+	initializers.DBConnect(&config)
+}
 
 func main() {
 	file, err := openLogFile(types.LOG_FILE)
@@ -25,8 +36,8 @@ func main() {
 	e := echo.New()
 	setupRoutes(e)
 
-	slog.Info("-------------------- STARTING --------------------")
-	slog.Info(fmt.Sprintf("---------- ENVIRONMENT = %s ----------", types.GetHost()))
+	_, hostname := types.GetHost()
+	slog.Info(fmt.Sprintf("---------- STARTING IN ENVIRONMENT = %s ----------", hostname))
 	e.Logger.Fatal(e.Start(":1323"))
 }
 

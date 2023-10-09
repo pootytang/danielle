@@ -51,6 +51,7 @@ func GetFiles(dir string, request_path string) ([]File, error) {
 		}
 
 		slog.Debug("GetFiles->walkFunc(): Performing case-incensitive check on the files extention")
+		hostURL, _ := types.GetHost()
 		for _, ext := range exts {
 			file_ext := strings.ToUpper(filepath.Ext(entry.Name()))
 			no_dot_file_ext := strings.Split(file_ext, ".")[1]
@@ -58,7 +59,7 @@ func GetFiles(dir string, request_path string) ([]File, error) {
 			if no_dot_file_ext == ext {
 				slog.Info(fmt.Sprintf("GetFiles->walkFunc(): file extention %s MATCH with ext %s. Adding image to array", entry.Name(), ext))
 				files = append(files, File{
-					SRC: types.GetHost() + request_path + entry.Name(),
+					SRC: hostURL + request_path + entry.Name(),
 					ALT: entry.Name(),
 				})
 				break

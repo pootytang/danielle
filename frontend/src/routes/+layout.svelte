@@ -2,8 +2,8 @@
 	import '../app.css';
 	import '../app.postcss';
 
+	import { page } from '$app/stores';
 	import { Icon } from 'flowbite-svelte-icons';
-
 	import {
 		Button,
 		DarkMode,
@@ -50,7 +50,7 @@
 		<NavBrand href="/">
 			<img src="/images/logo.png" class="mr-3 h-6 sm:h-9" alt="Docly Logo" />
 			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-				Gelanez Baby
+				D.A.J.
 			</span>
 		</NavBrand>
 
@@ -61,16 +61,30 @@
 					class="w-3 h-3 ml-2 text-white dark:text-white"
 				/></Button
 			>
-			<Dropdown>
-				<div slot="header" class="px-4 py-2">
-					<span class="block truncate text-sm font-medium">delane.jackson@gmail.com</span>
-				</div>
-				<DropdownItem href="/account">Settings</DropdownItem>
-				<DropdownItem href="/account">Billing</DropdownItem>
-				<form action="/logout" method="POST">
-					<DropdownItem type="submit" slot="footer">Sign out</DropdownItem>
-				</form>
-			</Dropdown>
+
+			<!-- USER STUFF -->
+			{#if $page.data.user}
+				<Dropdown>
+					<div slot="header" class="px-4 py-2">
+						<span class="block truncate text-sm font-medium">{$page.data.user.email}m</span>
+					</div>
+					<DropdownItem href="/account">Settings</DropdownItem>
+					<DropdownItem href="/account">Billing</DropdownItem>
+					<form action="/auth/logout" method="POST">
+						<DropdownItem slot="footer" type="submit">Log Out</DropdownItem>
+					</form>
+				</Dropdown>
+			{:else}
+				<Dropdown>
+					<div slot="header" class="px-4 py-2">
+						<span class="block truncate text-sm font-medium">No one home</span>
+					</div>
+					<form action="/logout" method="POST">
+						<DropdownItem slot="footer" href="/auth/login">Login</DropdownItem>
+					</form>
+				</Dropdown>
+			{/if}
+
 			<NavHamburger on:click={toggle} />
 			<DarkMode initialTheme="light" />
 		</div>
