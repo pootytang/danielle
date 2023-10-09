@@ -1,0 +1,60 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: danielleapi
+    build: 
+      context: ./api
+      dockerfile: Dockerfile.api
+    ports:
+      - 1323:1323
+    restart: unless-stopped
+    env_file:
+      - container.env
+    volumes:
+      # TESTING
+      - /media:/media
+      - /var/log/api:/var/log/api
+      # NEED THIS FOR SYNOLOGY
+      # - /volume1/photo/baby:/media
+      # - /volume1/docker/Danielle/logs:/var/log
+  
+  db:
+    container_name: pgdb
+    image: postgres
+    restart: always
+    env_file:
+      - container.env
+    ports:
+      - 5433:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+
+  sk:
+    container_name: nodesk
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.fe
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    env_file:
+      - container.env
+  
+  caddy:
+    container_name: caddy
+    build:
+      context: ./web/caddy
+      dockerfile: Dockerfile.caddy
+    restart: unless-stopped
+    ports:
+      - 8002:8002
+      - 4443:4443
+    volumes:
+      - ./web/caddy/data:/data
+      - ./web/caddy/config:/config
+      - ./web/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./web/caddy/logs:/var/log/caddy/
+
+volumes:
+  db:

@@ -1,0 +1,9 @@
+#SVELTEKIT IGNORE FILE IS INSIDE THE FRONTEND DIRECTORY
+*.env
+*.yml
+!container_sample.env
+!docker-compose.yml
+!docker-compose-synology.nginx_certbot.yml
+
+#ignore the backup folder
+backup
