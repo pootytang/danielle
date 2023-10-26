@@ -345,6 +345,77 @@ func (ac *AuthController) RefreshAccessToken(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, message)
 }
 
+/********** FIND USER **********/
+func (ac *AuthController) FindUser(ctx echo.Context) error {
+	slog.Info("FindUser(): Retrieving User")
+	var access_token string
+
+	slog.Info("FindUser(): Getting token from header")
+	authorizationHeader := ctx.Request().Header.Get("Authorization")
+	fields := strings.Fields(authorizationHeader)
+	slog.Debug(fmt.Sprintf("FindUser(): Authorization Header set to %s", authorizationHeader))
+	slog.Debug(fmt.Sprintf("FindUser(): Authorization Header fields %s", fields))
+
+	if len(fields) <= 0 {
+		slog.Error("FindUser(): Unable to find the Authorization header")
+		message := map[string]string{"status": "fail", "message": "authorization not found"}
+		return ctx.JSON(http.StatusUnauthorized, message)
+	}
+
+	if fields[0] != "Bearer" {
+		slog.Error("FindUser(): Unable to find the Authorization header")
+		message := map[string]string{"status": "fail", "message": "Bearer token not found"}
+		return ctx.JSON(http.StatusUnauthorized, message)
+	}
+
+	access_token = fields[1]
+	slog.Info("FindUser(): Retrieved Access Token")
+
+	// VALIDATE THE TOKEN
+	config, _ := initializers.LoadConfig(".")
+	slog.LogAttrs(
+		context.Background(),
+		slog.LevelDebug,
+		"FindUser(): config loaded",
+		slog.String("access_token_pubkey", config.AccessTokenPublicKey),
+		slog.String("access_token", access_token),
+	)
+
+	slog.Info("FindUser(): Validating access token")
+	sub, err := helpers.ValidateToken(access_token, config.AccessTokenPublicKey)
+	if err != nil {
+		slog.Error(fmt.Sprintf("FindUser(): Error validating token: %s", err.Error()))
+		message := map[string]string{"status": "fail", "message": "invalid access token"}
+		return ctx.JSON(http.StatusUnauthorized, message)
+	}
+	slog.Info("FindUser(): access token is valid")
+
+	// SEARCH FOR USER
+	slog.Info("FindUser(): Searching for user in db")
+	var user models.User
+	result := initializers.DB.First(&user, "id = ?", fmt.Sprint(sub))
+	if result.Error != nil {
+		slog.Error(fmt.Sprintf("FindUser(): Error searching subject %s: %s", sub, err.Error()))
+		message := map[string]string{"status": "fail", "message": "subject of token is not found in DB"}
+		return ctx.JSON(http.StatusForbidden, message)
+	}
+	slog.Info(fmt.Sprintf("FindUser(): Found User %s ", user.Name))
+
+	userResponse := &models.UserResponse{
+		ID:            user.ID,
+		Name:          user.Name,
+		Email:         user.Email,
+		Role:          user.Role,
+		Access_Token:  access_token,
+		Refresh_Token: "",
+		Logged_In:     true,
+		CreatedAt:     user.CreatedAt,
+		UpdatedAt:     user.UpdatedAt,
+	}
+	message := map[string]interface{}{"status": "success", "message": "logged in", "user": userResponse}
+	return ctx.JSON(http.StatusOK, message)
+}
+
 /********** GET USER **********/
 func (ac *AuthController) GetUser(ctx echo.Context) error {
 	slog.Info("GetUser(): Retrieving User")

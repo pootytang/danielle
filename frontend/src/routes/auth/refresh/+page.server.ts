@@ -1,22 +1,22 @@
 import type { PageServerLoad } from './$types';
 import { env } from '$env/dynamic/public';
-import { fail, redirect } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 import { redirect2CallbackPage } from '$helpers';
 
 export const load: PageServerLoad = (async ({ fetch, url, cookies }) => {
-  let cbPage = '/auth/login'
+  let loginPage = '/auth/login'
   const page = url.searchParams.get('page') // deliver and not /deliver
 
   if (page !== undefined && page !== '') {
-    cbPage = `/auth/login?page=${url.searchParams.get('page')}`
+    loginPage = `/auth/login?page=${url.searchParams.get('page')}`
   }
-  console.log(`auth/refresh/+page.server.ts: URL Params: ${cbPage}`)
+  console.log(`auth/refresh/+page.server.ts: Login Page will be: ${loginPage}`)
 
   const rtoken = cookies.get('refresh_token')
 
   if (rtoken === undefined || rtoken === '') {
     console.log('auth/refresh/+page.server.ts: unable to set rtoken to a value. redirect to login page')
-    throw redirect(303, cbPage)
+    throw redirect(303, loginPage)
   }
 
   console.log("auth/refresh/+page.server.ts: Calling the API's refresh endpoint")
@@ -34,7 +34,7 @@ export const load: PageServerLoad = (async ({ fetch, url, cookies }) => {
 
   if (res.status === 403) {
     console.log("auth/refresh/+page.server.ts: refresh token may be expired, redirect back to login page")
-    throw redirect(303, cbPage)
+    throw redirect(303, loginPage)
   }
 
   console.log("auth/refresh/+page.server.ts: retrieved a new access token. Setting cookie")

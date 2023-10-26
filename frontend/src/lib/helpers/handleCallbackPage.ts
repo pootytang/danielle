@@ -1,8 +1,8 @@
-export default function getCallbackPage(queryParam: string, pathName: string) {
+export default function getCallbackPage(queryParam: string) {
 	let cbPage 
   if (!queryParam) {
-    console.log(`getCallbackPage(): setting cbPage to path: ${pathName.split('/')[1]}`)
-    cbPage = pathName.split('/')[1]
+    console.log('getCallbackPage(): queryparam is empty leaving callback page to Home')
+    cbPage = 'home'
   } else {
     console.log(`getCallbackPage(): setting cbPage to search param: ${queryParam}`)
     cbPage = queryParam

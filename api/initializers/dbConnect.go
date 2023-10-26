@@ -18,7 +18,7 @@ func DBConnect(config *Config) {
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		config.DBHost, config.DBUserName, config.DBUserPassword, config.DBName, config.DBPort,
 	)
-	slog.Info(fmt.Sprintf("DBConnect(): dsn set to: %s", dsn))
+	slog.Debug(fmt.Sprintf("DBConnect(): dsn set to: %s", dsn))
 
 	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {

@@ -2,40 +2,37 @@ import { env } from '$env/dynamic/public';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from "./$types";
 import type { PageServerLoad } from './$types';
-import { redirect2CallbackPage } from '$helpers';
+import { getCallbackPage, redirect2CallbackPage } from '$helpers';
+
+// type AuthUser = {
+//   id: string,
+//   name: string,
+//   email: string,
+//   role: string,
+//   access_token: string,
+//   refresh_token: string
+// }
 
 export const load: PageServerLoad = (async ({ url, locals }) => {
   console.log(`signup/+page.server.ts (PageServerLoad): URL Params: ${url.searchParams.get('page')}`)
 
-  let cbPage = url.searchParams.get('page')
-  if (!cbPage || cbPage === 'null') {
-    console.log(`signup/+page.server.ts (PageServerLoad): setting cbPage to path: /`)
-    cbPage = '/'
-  } 
-  console.log("signup/+page.server.ts (PageServerLoad): Call Back page set to", cbPage)
+  const page = getCallbackPage(url.searchParams.get('page') || "")
+  console.log("signup/+page.server.ts (PageServerLoad): Call Back page set to", page)
 
   console.log('signup/+page.server.ts (PageServerLoad): Checking if user is already logged in')
   if (locals.user) {
-    if (cbPage === '/') {
-      throw redirect(302, cbPage)
-    } else {
-      throw redirect(302, `/${cbPage}`)
-    }
+    throw redirect2CallbackPage(302, page)
   }
 
   console.log('signup/+page.server.ts (PageServerLoad): User is NOT logged in')
-  return { data: cbPage }
+  return { data: page }
 })
 
 export const actions: Actions = {
-  default: async ({request,url, fetch, cookies}) => {
+  default: async ({request, url, fetch, cookies}) => {
     console.log(`signup/+page.server.ts (Actions): URL Params: ${url.searchParams.get('page')}`)
     
-    let page = url.searchParams.get('page')
-    if (!page || page === 'null') {
-      console.log('signup/+page.server.ts (Actions): setting callback page to "home"')
-      page = 'home'
-    }
+    const page = getCallbackPage(url.searchParams.get('page') || "")
     const formData = Object.fromEntries(await request.formData());
 
     console.log("signup/+page.server.ts (Actions): Checking that name, email, and password was populated")
@@ -45,7 +42,7 @@ export const actions: Actions = {
 			});
 		}
     
-    console.log("signup/+page.server.ts (Actions): Posting to API")
+    console.log("signup/+page.server.ts (Actions): Posting to APIs register page")
     const res = await fetch(env.PUBLIC_HOST_URL + '/api/v1/auth/register', {
       method: 'POST',
       headers: {
@@ -74,26 +71,30 @@ export const actions: Actions = {
     const access_token = jsonData.user.access_token
     const refresh_token = jsonData.user.refresh_token
 
+    // const auth_user: AuthUser = {
+    //   id: jsonData.user.id,
+    //   name: jsonData.user.name,
+    //   email: jsonData.user.email,
+    //   role: jsonData.user.role,
+    //   access_token: jsonData.user.access_token,
+    //   refresh_token: jsonData.user.refresh_token
+    // }
+
     cookies.set('access_token', access_token, {
       httpOnly: true,
       path: '/',
-      secure: false,
+      secure: env.PUBLIC_ENV === 'PROD',
       maxAge: 60 * 60 * 24 // 1 day
     })
 
     cookies.set('refresh_token', refresh_token, {
       httpOnly: true,
       path: '/',
-      secure: false,
+      secure: env.PUBLIC_ENV === 'PROD',
       maxAge: 60 * 60 * 24 * 5 // 5 days
     })
 
     console.log(`singup/+page.server.ts (Actions): Access and Refresh tokens set in cookies. Redirecting to ${page}`)
     throw redirect2CallbackPage(302, page)
-    // if (page === 'home') {
-    //   throw redirect(302, '/')
-    // } else {
-    //   throw redirect(302, `/${page}`)
-    // }
   }
 };

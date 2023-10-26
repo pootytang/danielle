@@ -36,8 +36,9 @@ func GetUltrasounds(c echo.Context) error {
 
 	slog.Debug(fmt.Sprintf("GetUltraSounds(): Files == %s", files))
 	if err != nil {
-		message := map[string]string{"message": "error retrieving files"}
-		return c.JSON(http.StatusServiceUnavailable, message)
+		slog.Error(fmt.Sprintf("GetUltraSounds(): Error retrieving files: %s", error.Error(err)))
+		message := map[string]string{"message": "Folder not found"}
+		return c.JSON(http.StatusNotFound, message)
 	}
 
 	return c.JSON(http.StatusOK, files)
@@ -70,8 +71,8 @@ func GetGrowingMommyImages(c echo.Context) error {
 	files, err := helpers.GetFiles(dir, route)
 
 	if err != nil {
-		message := map[string]string{"message": "error retrieving files"}
-		return c.JSON(http.StatusServiceUnavailable, message)
+		message := map[string]string{"message": "Folder not found"}
+		return c.JSON(http.StatusNotFound, message)
 	}
 
 	return c.JSON(http.StatusOK, files)
@@ -104,8 +105,8 @@ func GetShowerRevealImages(c echo.Context) error {
 	files, err := helpers.GetFiles(dir, route)
 
 	if err != nil {
-		message := map[string]string{"message": "error retrieving files"}
-		return c.JSON(http.StatusServiceUnavailable, message)
+		message := map[string]string{"message": "Folder not found"}
+		return c.JSON(http.StatusNotFound, message)
 	}
 
 	return c.JSON(http.StatusOK, files)
@@ -123,6 +124,41 @@ func GetShowerRevealImage(c echo.Context) error {
 		return c.File(dir + file_name)
 	} else {
 		slog.Warn(fmt.Sprintf("GetShowerRevealImage(): Image %s doesn't exist", dir+file_name))
+		message := map[string]string{"message": file_name + " not found"}
+		return c.JSON(http.StatusNotFound, message)
+	}
+}
+
+/**** BIRTH DAY ****/
+func GetBirthDayImages(c echo.Context) error {
+	slog.Info("GetBirthDayImages(): Called")
+
+	dir := types.BIRTHDAY_FOLDER
+	route := types.BIRTHDAY_ROUTE
+
+	files, err := helpers.GetFiles(dir, route)
+
+	if err != nil {
+		slog.Error(fmt.Sprintf("GetBirthDayImages(): Error retrieving files: %s", error.Error(err)))
+		message := map[string]string{"message": "Folder not found"}
+		return c.JSON(http.StatusNotFound, message)
+	}
+
+	return c.JSON(http.StatusOK, files)
+}
+
+func GetBirthDayImage(c echo.Context) error {
+	slog.Info("GetBirthDayImage(): Called")
+
+	dir := types.BIRTHDAY_FOLDER
+	file_name := c.Param("image")
+
+	slog.Info("GetBirthDayImage(): Checking image " + dir + file_name)
+	if helpers.FileExists(dir + file_name) {
+		slog.Debug("GetBirthDayImage(): FOUND " + file_name)
+		return c.File(dir + file_name)
+	} else {
+		slog.Warn(fmt.Sprintf("GetBirthDayImage(): Image %s doesn't exist", dir+file_name))
 		message := map[string]string{"message": file_name + " not found"}
 		return c.JSON(http.StatusNotFound, message)
 	}

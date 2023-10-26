@@ -26,15 +26,15 @@ func GetFiles(dir string, request_path string) ([]File, error) {
 	endpoint := filepath.Base(request_path)
 	folder_name := types.ENDPOINT_TO_FOLDER[endpoint]
 
-	slog.Info(fmt.Sprintf("GetFiles(): Request URI: %s, Endpoing requested: %s, Matching folder: %s", request_path, endpoint, folder_name))
+	slog.Info(fmt.Sprintf("GetFiles(): Request URI: %s, Endpoint requested: %s, Matching folder: %s", request_path, endpoint, folder_name))
 	if len(folder_name) <= 0 {
 		slog.Error("GetFiles(): folder value is empty")
-		return files, fmt.Errorf("GetFiles(): unable to map folder name")
+		return files, fmt.Errorf("GetFiles(): not folder mapping")
 	}
 
 	if !dirExists(dir) {
 		slog.Error(fmt.Sprintf("GetFiles(): Directory %s does not exist", dir))
-		return files, fmt.Errorf("GetFiles(): could not find directory %s", dir)
+		return files, fmt.Errorf("GetFiles(): directory not found %s", dir)
 	}
 
 	err := filepath.WalkDir(dir, func(path string, entry fs.DirEntry, err error) error {

@@ -30,14 +30,14 @@
 	];
 
 	const Stages = [
-		{ text: 'Infancy (0 - 1 year)', href: 'https://gelane.quickconnect.to/mo/sharing/BaYNwj2RO' },
-		{ text: 'Toddlerhood (1 - 2 years)', href: '/th' },
-		{ text: 'Early Childhood (3 - 6 years)', href: '/ec' },
-		{ text: 'Late Childhood (7 - 10 years)', href: '/lc' },
+		{ text: 'Infancy (0 - 1 year)', href: '/infant' },
+		{ text: 'Toddlerhood (1 - 2 years)', href: '/toddler' },
+		{ text: 'Early Childhood (3 - 6 years)', href: '/earlychild' },
+		{ text: 'Late Childhood (7 - 10 years)', href: '/latechild' },
 		{ text: 'Adolescence (11 - 19 years)', href: '/adolescence' },
-		{ text: 'Early Adulthood (20 - 44 years)', href: '/ea' },
-		{ text: 'Middle Adulthood (45 - 64 years)', href: '/ma' },
-		{ text: 'Late Adulthood (65 years+)', href: '/la' }
+		{ text: 'Early Adulthood (20 - 44 years)', href: '/earlyadult' },
+		{ text: 'Middle Adulthood (45 - 64 years)', href: '/midadult' },
+		{ text: 'Late Adulthood (65+)', href: '/lateadult' }
 	];
 </script>
 
@@ -66,7 +66,7 @@
 			{#if $page.data.user}
 				<Dropdown>
 					<div slot="header" class="px-4 py-2">
-						<span class="block truncate text-sm font-medium">{$page.data.user.email}m</span>
+						<span class="block truncate text-sm font-medium">{$page.data.user.email}</span>
 					</div>
 					<DropdownItem href="/account">Settings</DropdownItem>
 					<DropdownItem href="/account">Billing</DropdownItem>

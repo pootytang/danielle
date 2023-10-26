@@ -14,7 +14,8 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$helpers: 'src/lib/helpers'
-		}
+		},
+		csrf: { checkOrigin: false }
 	}
 };
 

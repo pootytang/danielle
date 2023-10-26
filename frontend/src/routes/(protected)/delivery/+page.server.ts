@@ -4,6 +4,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = (async ({ fetch, locals }) => {
   console.log('delivery/+page.server.ts: Called')
+  console.log(`delivery/+page.server.ts: ENV set to: ${env.PUBLIC_ENV}`)
   
   if (!locals.user) {
   console.log("delivery/+page.server.ts: User is NOT logged in")
@@ -15,7 +16,11 @@ export const load: PageServerLoad = (async ({ fetch, locals }) => {
   const deliveryURL = env.PUBLIC_HOST_URL + '/api/v1/private/delivery'
   console.log(`delivery/+page.server.ts: Fetching: ${deliveryURL}`)
 
-  const res = await fetch(deliveryURL)
+  const res = await fetch(deliveryURL, {
+    headers: {
+      'Authorization': `Bearer ${locals.user.access_token}`,
+    },
+  })
   const items = await res.json()
 
   if (res.status === 401) {

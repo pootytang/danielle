@@ -9,7 +9,8 @@ declare global {
 				email: string;
 				access_token: string;
 				refresh_token: string;
-			};
+			},
+			callbackPage?: string
 		}
 		// interface PageData {}
 		// interface Platform {}
